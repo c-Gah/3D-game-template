@@ -1,0 +1,26 @@
+{
+    "files.exclude": {
+        "server/Dockerfile": true,
+        "server/app1.yaml": true,
+        "server/app.yaml": true,
+        "server/tsconfig.json": true,
+        "server/yarn.lock": true,
+        "server/.gcloudignore": true,
+        "server/.gitignore": true,
+        "server/node_modules": true,
+        "server/build": true,
+        "client/build": true,
+        "client/node_modules": true,
+        "client/yarn.lock": true,
+        "client/vite.config.ts": true,
+        "client/vite.config.js.map": true,
+        "client/vite.config.js": true,
+        "client/tsconfig.node.json": true,
+        "client/tsconfig.json": true,
+        "client/svelte.config.js": true,
+        "client/README.md": true,
+        ".vscode": true,
+        "server/src/lib": true
+    },
+    "workspace.isHidden": true
+}
