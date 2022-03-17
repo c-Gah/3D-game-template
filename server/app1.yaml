@@ -1,0 +1,9 @@
+
+runtime: nodejs16
+env: flex
+service_name: mit_game
+
+network:
+  instance_tag: geckos-server
+  forwarded_ports:
+    - 9208/udp

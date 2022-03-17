@@ -1,0 +1,44 @@
+{
+    "name": "phaser-on-nodejs-example",
+    "version": "1.0.0",
+    "description": "",
+    "main": "build/server.js",
+    "keywords": [],
+    "author": "Yannick Deubel (https://github.com/yandeu)",
+    "license": "MIT",
+    "type": "module",
+    "engines": {
+        "node": "16.x.x"
+    },
+    "scripts": {
+        "dev:server:BAD": "nodemon --exec \"node --loader ts-node/esm\" src/server/server.ts",
+        "dev:server:BAD2": "node --loader ts-node/esm src/server.ts",
+        "dev": "tsc && concurrently \"tsc -w\" \"nodemon build/server.js\"",
+        "start": "node build/server.js"
+    },
+    "dependencies": {
+        "@enable3d/ammo-on-nodejs": "^0.25.1",
+        "@enable3d/ammo-physics": "^0.25.1",
+        "@enable3d/common": "^0.25.1",
+        "@enable3d/phaser-extension": "^0.25.1",
+        "@geckos.io/phaser-on-nodejs": "^1.2.7",
+        "@geckos.io/snapshot-interpolation": "^1.1.0",
+        "@geckos.io/typed-array-buffer-schema": "^1.1.0",
+        "enable3d": "^0.25.1",
+        "express": "^4.17.3",
+        "matter-js": "^0.18.0",
+        "navigator": "^1.0.1",
+        "phaser": "^3.55.2",
+        "socket.io": "^4.4.1",
+        "three": "^0.138.0",
+        "typescript": "^4.6.2"
+    },
+    "devDependencies": {
+        "@types/express": "^4.17.13",
+        "@types/matter-js": "^0.17.7",
+        "@types/three": "^0.137.0",
+        "concurrently": "^7.0.0",
+        "nodemon": "^2.0.15",
+        "ts-node": "^10.5.0"
+    }
+}
