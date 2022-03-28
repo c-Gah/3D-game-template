@@ -1,12 +1,7 @@
-import { Project, PhysicsLoader, Scene3D, ExtendedObject3D, THREE, JoyStick, ThirdPersonControls, PointerLock, PointerDrag } from 'enable3d';
+import { Project, PhysicsLoader, Scene3D } from 'enable3d';
 import { loadAssets } from './assets'
-import { createObjects, objectUpdate } from './map'
 import { setupComs } from './coms'
-
-/**
- * Is touch device?
- */
-const isTouchDevice = 'ontouchstart' in window
+import { worldUpdate } from './updates'
 
 class MainScene extends Scene3D {
     constructor() {
@@ -22,12 +17,44 @@ class MainScene extends Scene3D {
     }
 
     async create() {
+        // Setup world settings
+        const { lights } = await this.warpSpeed('-ground', '-orbitControls')
+        
+        const { hemisphereLight, ambientLight, directionalLight } = lights
+        const intensity = 0.65
+        hemisphereLight.intensity = intensity
+        ambientLight.intensity = intensity
+        directionalLight.intensity = intensity
+
+        // scene3D.physics.debug.enable()
+
+        setTimeout(() => {
+            const placeholder = document.getElementById('welcome-game-placeholder')
+            if (placeholder) placeholder.remove()
+        }, 500)
+
+        // Start the world coms
         setupComs(this);
-        createObjects(this);
+        
+        //window.onresize = this.resize()
+        // this.resize()
     }
 
-    update(time, delta) {
-        objectUpdate(time, delta, this)
+    resize = () => {
+        const newWidth = window.innerWidth
+        const newHeight = window.innerHeight
+
+        this.renderer.setSize(newWidth, newHeight)
+
+        //TODO create an actual perspective camera
+        //const camera = this.camera as 
+        // @ts-expect-error
+        this.camera.aspect = newWidth / newHeight
+        this.camera.updateProjectionMatrix()
+    }
+
+    update(time: number, delta: number) {
+        worldUpdate(time, delta, this);
     }
 }
 

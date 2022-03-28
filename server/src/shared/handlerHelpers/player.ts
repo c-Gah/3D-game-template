@@ -1,22 +1,23 @@
-import { propsAll } from './props'
+import type { GLTF } from 'three/examples/jsm/loaders/GLTFLoader';
+import { propsAll } from '../types';
 
-export function buildPlayer(extendedObject3D: any, properties: propsAll, factory: any, physics: any) {
-    const x = properties.x;
-    const y = properties.y;
-    const z = properties.z;
-    const collisionFlags = properties.collisionFlags;
+export function init(extendedObject3D: any, factory: any, physics: any, props: propsAll, model: GLTF) {
 
-    //let man = object3D;
-    //let superMan = new ExtendedObject3D()
+    const subModel = model.scene.children[0]
 
-    //let extendedObject3D = new ExtendedObject3D()
-    extendedObject3D.name = properties.id
+    extendedObject3D.add(subModel)
+
+    const x = props.x;
+    const y = props.y;
+    const z = props.z;
+    const collisionFlags = props.collisionFlags;
+
+    extendedObject3D.name = props.id
     // May be uneeded
     extendedObject3D.rotateY(Math.PI + 0.1); // a hack
     //extendedObject3D.add(object3D);
     extendedObject3D.rotation.set(0, Math.PI * 1.5, 0);
     extendedObject3D.position.set(x, y, z);
-    //extendedObject3D.position.set(35, 50.5, 0);
 
     /**
      * Add the player to the scene with a body
@@ -36,6 +37,7 @@ export function buildPlayer(extendedObject3D: any, properties: propsAll, factory
         shape: 'hacd' // or any other shape you want
     }
     */
+
     physics.add.existing(extendedObject3D, physicsOptions);
 
     extendedObject3D.body.setFriction(0.8)
@@ -50,3 +52,21 @@ export function buildPlayer(extendedObject3D: any, properties: propsAll, factory
     return extendedObject3D;
 }
 
+export function movePlayerForward(object3d: any, theta: any): void {
+    if (object3d && object3d.body) {
+        const speed = 4
+
+        const x = Math.sin(theta) * speed,
+            y = object3d.body.velocity.y,
+            z = Math.cos(theta) * speed
+
+        object3d.body.setVelocity(x, y, z)
+    }
+}
+
+export function jump(object3d: any) {
+    if (object3d === undefined) return
+    if (object3d.body === undefined) return
+
+    object3d.body.applyForceY(6)
+}

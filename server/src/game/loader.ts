@@ -1,10 +1,9 @@
-import type { internalObjectServer } from '../shared/props.js'
 import AmmoNodeJS from '@enable3d/ammo-on-nodejs';
 const { Loaders } = AmmoNodeJS;
 import path from 'path';
 import { objects } from './updates.js'
-import { createBook } from './objects/book.js';
-import { createBox, createGround } from './objects/box.js';
+import { createBook } from './handlers/Book.js';
+import { createBox, createGround } from './handlers/Box.js';
 
 export async function loadAsset(type: string): Promise<any> {
     console.log("Load Specific Asset")
@@ -22,43 +21,16 @@ export async function loadAsset(type: string): Promise<any> {
     return object
 }
 
-export async function loadMap(factory: any, physics: AmmoNodeJS.Physics) {
-    // remove class values to functional componants
-    // order matters for some reason
+export async function loadMap(physics: AmmoNodeJS.Physics) {
+    //const player = await createPlayer("suzanne", physics);
+    //objects[player.common.id] = player
 
-    //objects[properties.id] = properties;
-
-    //const boxManProps = await createPlayer("suzanne", factory, physics);
-    //objects[boxManProps.common.id] = boxManProps
-
-    const book = await createBook(factory, physics);
+    const book = await createBook(physics);
     objects[book.common.id] = book
 
-    const groundProps = createGround(physics);
-    objects[groundProps.common.id] = groundProps
+    //const groundProps = createGround(physics);
+    //objects[groundProps.common.id] = groundProps
 
-    const boxProps: internalObjectServer = {
-        common: {
-            id: "box",
-            asset: "box",
-            x: 35,
-            y: 20,
-            z: 0,
-            width: 5,
-            depth: 5,
-            collisionFlags: 0,
-            mass: 10,
-        },
-        client: {
-            //breakable: true
-            breakable: 1
-        }
-    }
-    createBox(physics, boxProps);
-    objects[boxProps.common.id] = boxProps
-
-    //const boxProps2 = createBox(physics);
-    //objects[boxProps2.id] = boxProps2
-
-    // TODO create multiple models for creating boxs and box men
+    const box = createBox(physics);
+    objects[box.common.id] = box
 }

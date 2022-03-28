@@ -1,7 +1,8 @@
-import socketIOClient, { Socket } from 'socket.io-client';
 import type { Scene3D } from 'enable3d';
-import { setPlayableCharacterID, addSnapshot } from './map';
-import type { clientStateType } from '../../../server/src/shared/props'
+import type { clientStateType } from '../../../server/src/shared/types'
+import socketIOClient, { Socket } from 'socket.io-client';
+import { SI } from './updates';
+import { setPlayableCharacterID } from './handlers/PlayablePlayer'
 
 // emits are send from other classes
 const ENDPOINT = 'http://localhost:5000'; //endpoint port 5000
@@ -20,8 +21,8 @@ export function setupComs(scene: Scene3D) {
     });
 
     socket.on('snapshot', snapshot => {
-        //console.log(snapshot)
-        addSnapshot(snapshot);
+        // Add the snapshot
+        SI.snapshot.add(snapshot);
 
         socket.emit('clientState', clientState);
         resetClientState()
@@ -30,16 +31,14 @@ export function setupComs(scene: Scene3D) {
     return socket.id;
 }
 
-export function sendMovement(x: number, y: number, z: number) {
-    const toSend = { x: x, y: y, z: z }
+export function sendMovement(isMoving: boolean, theta: number) {
+    const toSend = { isMoving: isMoving, theta: theta }
     clientState.movement = toSend
-    //socket.emit('movement', toSend);
 }
 
-export function sendAngularVelocity(x: number, y: number, z: number) {
+export function sendRotation(x: number, y: number, z: number) {
     const toSend = { x: x, y: y, z: z }
-    clientState.angularVelocity = toSend
-
+    clientState.rotation = toSend
 }
 
 export function sendJump(doJump: boolean) {

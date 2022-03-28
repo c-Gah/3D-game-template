@@ -2,12 +2,13 @@
 // @ts-expect-error
 import _ammo from '../src/lib/ammo/ammo.cjs';
 import AmmoNodeJS from '@enable3d/ammo-on-nodejs';
-const { Physics, ServerClock, Loaders, ExtendedObject3D } = AmmoNodeJS;
-import path from 'path';
+const { Physics, ServerClock } = AmmoNodeJS;
 
 import { startComs } from './game/coms.js';
-import { objectUpdates } from './game/updates.js';
+import { updateObjects, updateSnapshot } from './game/updates.js';
 import { loadMap } from './game/loader.js';
+
+let tick = 0;
 
 async function ServerScene(ammo: any) {
     let physics: AmmoNodeJS.Physics = new Physics();
@@ -17,7 +18,7 @@ async function ServerScene(ammo: any) {
 
     startComs(physics, factory);
 
-    await loadMap(factory, physics);
+    await loadMap(physics);
 
     // clock
     const clock = new ServerClock(60, true)
@@ -34,8 +35,14 @@ async function ServerScene(ammo: any) {
     function update(delta: number) {
         physics.update(delta * 1000);
 
-        // Enter 2 in for hals of the server fps. 30 FPS
-        objectUpdates(delta, 2);
+        // Only update on ticks
+        tick++
+
+        // only send the update to the client at 30 FPS (save bandwidth)
+        if (tick % 2 !== 0) return
+
+        updateSnapshot()
+        updateObjects(delta);
     }
 }
 

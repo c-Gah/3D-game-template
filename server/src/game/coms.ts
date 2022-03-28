@@ -1,4 +1,4 @@
-import type { clientStateType } from '../shared/props.js'
+import type { clientStateType } from '../shared/types.js'
 
 import express from 'express';
 import { Server, Socket } from 'socket.io';
@@ -22,7 +22,6 @@ export function startComs(physics: any, factory: any) {
 function startExpress() {
     const expressServer = express();
     const httpServer = createServer(expressServer);
-
 
     /* start server functions */
     const __dirname = path.resolve();

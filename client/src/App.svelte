@@ -2,7 +2,7 @@
 	import { tick } from "svelte";
 
 	import logo from "./assets/svelte.png";
-	import Counter from "./lib/Counter.svelte";
+	import Controls from "./lib/Controls.svelte";
 
 	import { startPhaserGame } from "./game/index";
 
@@ -10,7 +10,7 @@
 		await tick();
 
 		startPhaserGame();
-		console.log("after more");
+		console.log("Game Created");
 	}
 	loadGame();
 </script>
@@ -18,23 +18,14 @@
 <main>
 	<div id="gameCanvasProd" />
 
-	<img src={logo} alt="Svelte Logo" />
-	<h1>Hello Typescript!</h1>
+	<img class="Logo" src={logo} alt="Svelte Logo" />
 
-	<Counter />
-
-	<p>
-		Visit <a href="https://svelte.dev">svelte.dev</a> to learn how to build Svelte
-		apps.
-	</p>
-
-	<p>
-		Check out <a href="https://github.com/sveltejs/kit#readme">SvelteKit</a>
-		for the officially supported framework, also powered by Vite!
-	</p>
+	<Controls />
 </main>
 
-<style>
+<style type="text/scss">
+	@import "./App.scss";
+
 	:root {
 		font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
 			Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
@@ -44,11 +35,6 @@
 		text-align: center;
 		padding: 1em;
 		margin: 0 auto;
-	}
-
-	img {
-		height: 16rem;
-		width: 16rem;
 	}
 
 	h1 {
